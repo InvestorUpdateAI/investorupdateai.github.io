@@ -259,28 +259,8 @@
   .badge-red { background: rgba(255,77,77,0.1); color: var(--red); border: 0.5px solid var(--red); }
   .badge-purple { background: rgba(192,132,252,0.1); color: var(--purple); border: 0.5px solid var(--purple); }
 
-  /* Color accents for broker icons */
-  .ibkr-icon { background: rgba(0,82,204,0.15); }
-  .webull-icon { background: rgba(0,212,255,0.1); }
-  .moomoo-icon { background: rgba(255,77,77,0.1); }
+  /* Color accents for icons */
   .ig-icon { background: linear-gradient(135deg, rgba(193,53,132,0.2), rgba(245,96,64,0.15)); }
-  .yt-icon { background: rgba(255,0,0,0.1); }
-  .discord-icon { background: rgba(88,101,242,0.15); }
-
-  /* Commission callout */
-  .commission-strip {
-    background: rgba(0,212,160,0.06);
-    border: 0.5px solid rgba(0,212,160,0.25);
-    border-radius: 8px;
-    padding: 10px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
-    animation: fadeUp 0.5s ease 0.3s both;
-  }
-  .commission-text { font-size: 11px; color: var(--muted); line-height: 1.5; }
-  .commission-text strong { color: var(--green); }
 
   /* Market status bar */
   .market-bar {
@@ -446,62 +426,101 @@
     <span class="btn-badge badge-cyan">Instagram</span>
   </a>
 
-  <!-- Broker affiliate links -->
-  <div class="section-label">Start trading — our trusted brokers</div>
-
-  <div class="commission-strip">
-    <span style="font-size: 18px;">💰</span>
-    <div class="commission-text">
-      <strong>Sign up via our links and earn free stocks &amp; bonuses.</strong> We may earn a commission at no cost to you — it helps keep this account free.
-    </div>
-  </div>
-
-  <a class="link-btn" href="https://www.interactivebrokers.com/referral" target="_blank">
-    <div class="btn-icon ibkr-icon">🏦</div>
-    <div class="btn-content">
-      <div class="btn-title">Interactive Brokers (IBKR)</div>
-      <div class="btn-sub">Global markets · 160+ exchanges · Low commissions · US &amp; MY</div>
-    </div>
-    <span class="btn-badge badge-cyan">$200 / referral</span>
-  </a>
-
-  <a class="link-btn" href="https://act.webullapp.com/mktb/partners/individual" target="_blank">
-    <div class="btn-icon webull-icon">📱</div>
-    <div class="btn-content">
-      <div class="btn-title">Webull</div>
-      <div class="btn-sub">Commission-free · Advanced charts · Free stocks for new users</div>
-    </div>
-    <span class="btn-badge badge-green">Up to $1,400 bonus</span>
-  </a>
-
-  <a class="link-btn" href="https://www.moomoo.com/my" target="_blank">
-    <div class="btn-icon moomoo-icon">🔴</div>
-    <div class="btn-content">
-      <div class="btn-title">moomoo Malaysia</div>
-      <div class="btn-sub">SC-licensed · Free Apple share for new users · RM1,800+ welcome pack</div>
-    </div>
-    <span class="btn-badge badge-red">RM1,800+ bonus</span>
-  </a>
-
   <!-- Content / analysis -->
-  <div class="section-label">Our analysis</div>
+  <div class="section-label">Latest analysis</div>
+
+  <a class="link-btn primary" href="https://www.instagram.com/p/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(0,212,160,0.1);">🏭</div>
+    <div class="btn-content">
+      <div class="btn-title">$GLW — The 175-Year-Old Glassmaker</div>
+      <div class="btn-sub">Amazon, Nvidia &amp; Meta all desperately need Corning. Three megadeals in 2026. Up 6× since 2023. The most overlooked AI stock?</div>
+    </div>
+    <span class="btn-badge badge-green">Latest</span>
+  </a>
 
   <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
-    <div class="btn-icon" style="background: rgba(0,212,160,0.1);">📈</div>
+    <div class="btn-icon" style="background: rgba(0,212,255,0.1);">🍎</div>
     <div class="btn-content">
-      <div class="btn-title">Latest: $AAPL WWDC 2026</div>
-      <div class="btn-sub">"Siri just died. Google is now inside your iPhone." — Full breakdown</div>
+      <div class="btn-title">$AAPL — Siri Just Died</div>
+      <div class="btn-sub">Google is now inside your iPhone. Apple pays $1B/year for Gemini. WWDC 2026 breakdown — supercycle or sell the news?</div>
     </div>
-    <span class="btn-badge badge-green">Live now</span>
+    <span class="btn-badge badge-cyan">WWDC 2026</span>
   </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(255,77,77,0.1);">🔴</div>
+    <div class="btn-content">
+      <div class="btn-title">$AVGO — The Quarter Wall Street Couldn't Handle</div>
+      <div class="btn-sub">AI revenue +143% YoY. Record free cash flow. Stock plunged 14% after hours. What really happened?</div>
+    </div>
+    <span class="btn-badge badge-red">Earnings deep-dive</span>
+  </a>
+
+  <div class="section-label">Bull flag watchlist</div>
 
   <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
     <div class="btn-icon" style="background: rgba(245,166,35,0.1);">🚩</div>
     <div class="btn-content">
       <div class="btn-title">10 Bull Flag Stocks — Full Report</div>
-      <div class="btn-sub">NVDA · AVGO · AMD · LRCX · ARM · DELL · ORCL · MSFT · CIEN · DDOG</div>
+      <div class="btn-sub">NVDA · AVGO · AMD · LRCX · ARM · DELL · ORCL · MSFT · CIEN · DDOG — entry zones, targets &amp; stop-losses</div>
     </div>
     <span class="btn-badge badge-amber">Free report</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(192,132,252,0.1);">💾</div>
+    <div class="btn-content">
+      <div class="btn-title">$MU — Up 955% in 12 Months. Then -13% in a Day</div>
+      <div class="btn-sub">Generational dip or cyclical trap? Support at $840–$860. Earnings Jun 24. Morgan Stanley PT $1,050.</div>
+    </div>
+    <span class="btn-badge" style="background:rgba(192,132,252,0.15);color:#C084FC;border:0.5px solid #C084FC">Earnings Jun 24</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(0,212,255,0.1);">📲</div>
+    <div class="btn-content">
+      <div class="btn-title">$SNDK — +642% YTD. Most Divisive Stock on Nasdaq</div>
+      <div class="btn-sub">BofA target $2,100 vs bear case $1,027. Zero debt. 5 hyperscaler contracts. Is the easy money gone?</div>
+    </div>
+    <span class="btn-badge badge-cyan">Debate</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(0,212,160,0.1);">⚡</div>
+    <div class="btn-content">
+      <div class="btn-title">$NVDA — RTX Spark Reinvents the PC</div>
+      <div class="btn-sub">Computex 2026: Blackwell GPU + Grace CPU on one 3nm chip. 1 petaflop AI on-device. Jensen's biggest bet yet.</div>
+    </div>
+    <span class="btn-badge badge-green">Computex 2026</span>
+  </a>
+
+  <div class="section-label">Options flow analysis</div>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(0,212,255,0.1);">📊</div>
+    <div class="btn-content">
+      <div class="btn-title">$AVGO Options Chain — What Big Money Told Us</div>
+      <div class="btn-sub">All 6 calls gaining, all 6 puts falling. The clearest near-term bullish options signal we've seen this year — before the crash.</div>
+    </div>
+    <span class="btn-badge badge-cyan">Options flow</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(255,77,77,0.1);">📉</div>
+    <div class="btn-content">
+      <div class="btn-title">$ORCL Options Chain — Calls Collapsing -80%</div>
+      <div class="btn-sub">Puts exploding +316%. Stock fell $17 from recent highs. Ahead of Jun 10 earnings — what the chain revealed.</div>
+    </div>
+    <span class="btn-badge badge-red">Options flow</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(136,150,171,0.1);">😐</div>
+    <div class="btn-content">
+      <div class="btn-title">$GOOG Options Chain — When Both Sides Lose</div>
+      <div class="btn-sub">Both calls AND puts declining simultaneously. Classic theta decay and max pain pinning. What it means mid-term.</div>
+    </div>
+    <span class="btn-badge" style="background:rgba(136,150,171,0.15);color:#8896AB;border:0.5px solid #8896AB">Neutral read</span>
   </a>
 
   <!-- Schedule preview -->
@@ -529,22 +548,10 @@
     </div>
   </div>
 
-  <!-- Community -->
-  <div class="section-label">Community</div>
-
-  <a class="link-btn" href="https://discord.gg/investorupdate" target="_blank">
-    <div class="btn-icon discord-icon">💬</div>
-    <div class="btn-content">
-      <div class="btn-title">Join our Discord</div>
-      <div class="btn-sub">Real-time alerts · chart setups · community watchlist</div>
-    </div>
-    <span class="btn-badge badge-purple">Free to join</span>
-  </a>
-
   <!-- Disclaimer -->
   <div class="disclaimer">
     <strong style="color: var(--amber);">⚠️ IMPORTANT DISCLAIMER</strong><br>
-    All content on @investorupdate.ai is for <strong>educational and informational purposes only</strong>. Nothing here constitutes financial advice, investment advice, or a recommendation to buy or sell any security. Always conduct your own due diligence (DYOR) before making any investment decision. Past analysis does not guarantee future results. Affiliate links above may earn us a commission at no additional cost to you.<br><br>
+    All content on @investorupdate.ai is for <strong>educational and informational purposes only</strong>. Nothing here constitutes financial advice, investment advice, or a recommendation to buy or sell any security. Always conduct your own due diligence (DYOR) before making any investment decision. Past analysis does not guarantee future results.<br><br>
     <span style="color: var(--dim);">© 2026 Investor Update AI · investorupdate.ai@gmail.com · Malaysia</span>
   </div>
 
