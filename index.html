@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investor Update AI — @investorupdate.ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0E1A;
+    --surface: #0D1320;
+    --surface2: #111827;
+    --border: #1E2535;
+    --border2: #2A3548;
+    --cyan: #00D4FF;
+    --green: #00D4A0;
+    --red: #FF4D4D;
+    --amber: #F5A623;
+    --purple: #C084FC;
+    --white: #FFFFFF;
+    --muted: #8896AB;
+    --dim: #4A5568;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'Nunito Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Scanline effect */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: rgba(0,212,255,0.12);
+    animation: scanline 6s linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  @keyframes scanline { 0% { top: -5px; } 100% { top: 100vh; } }
+
+  /* Ticker tape */
+  .ticker-wrap {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 36px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+  }
+  .ticker-inner {
+    display: flex;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-item {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 0 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-right: 1px solid var(--border);
+  }
+  .ticker-item .sym { color: var(--white); font-weight: 700; }
+  .ticker-item .up { color: var(--green); }
+  .ticker-item .dn { color: var(--red); }
+  .ticker-item .neu { color: var(--cyan); }
+
+  /* Main container */
+  .container {
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 72px 20px 60px;
+    position: relative;
+    z-index: 10;
+  }
+
+  /* Profile section */
+  .profile {
+    text-align: center;
+    padding: 32px 0 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .avatar {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+    font-weight: 900;
+    color: var(--cyan);
+    position: relative;
+    box-shadow: 0 0 0 4px rgba(0,212,255,0.08), 0 0 24px rgba(0,212,255,0.15);
+  }
+  .avatar::after {
+    content: '';
+    position: absolute;
+    inset: -6px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,212,255,0.2);
+    animation: pulse-ring 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse-ring { 0%, 100% { transform: scale(1); opacity: 0.4; } 50% { transform: scale(1.08); opacity: 0.15; } }
+  .live-dot {
+    width: 10px; height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+    position: absolute;
+    bottom: 4px; right: 4px;
+    border: 2px solid var(--bg);
+    animation: blink 1.5s ease-in-out infinite;
+  }
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .handle {
+    font-size: 13px;
+    color: var(--cyan);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .name {
+    font-size: 22px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .bio {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 340px;
+    margin: 0 auto 16px;
+  }
+  .bio strong { color: var(--white); }
+  .bio .highlight { color: var(--cyan); }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 28px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+  .stat { text-align: center; }
+  .stat-val { font-size: 18px; font-weight: 900; color: var(--white); }
+  .stat-label { font-size: 10px; color: var(--dim); font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; margin-top: 2px; }
+
+  /* Section labels */
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin: 24px 0 12px;
+    padding: 0 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 0.5px;
+    background: var(--border);
+  }
+
+  /* Link buttons */
+  .link-btn {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    text-decoration: none;
+    color: var(--white);
+    transition: all 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .link-btn::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    border-radius: 10px 0 0 10px;
+    background: var(--cyan);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .link-btn:hover {
+    border-color: var(--border2);
+    background: var(--surface2);
+    transform: translateY(-1px);
+  }
+  .link-btn:hover::before { opacity: 1; }
+  .link-btn:active { transform: scale(0.99); }
+  .btn-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .btn-content { flex: 1; }
+  .btn-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+  .btn-sub { font-size: 11px; color: var(--muted); }
+  .btn-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .badge-green { background: rgba(0,212,160,0.12); color: var(--green); border: 0.5px solid var(--green); }
+  .badge-cyan { background: rgba(0,212,255,0.1); color: var(--cyan); border: 0.5px solid var(--cyan); }
+  .badge-amber { background: rgba(245,166,35,0.1); color: var(--amber); border: 0.5px solid var(--amber); }
+  .badge-red { background: rgba(255,77,77,0.1); color: var(--red); border: 0.5px solid var(--red); }
+  .badge-purple { background: rgba(192,132,252,0.1); color: var(--purple); border: 0.5px solid var(--purple); }
+
+  /* Color accents for broker icons */
+  .ibkr-icon { background: rgba(0,82,204,0.15); }
+  .webull-icon { background: rgba(0,212,255,0.1); }
+  .moomoo-icon { background: rgba(255,77,77,0.1); }
+  .ig-icon { background: linear-gradient(135deg, rgba(193,53,132,0.2), rgba(245,96,64,0.15)); }
+  .yt-icon { background: rgba(255,0,0,0.1); }
+  .discord-icon { background: rgba(88,101,242,0.15); }
+
+  /* Commission callout */
+  .commission-strip {
+    background: rgba(0,212,160,0.06);
+    border: 0.5px solid rgba(0,212,160,0.25);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    animation: fadeUp 0.5s ease 0.3s both;
+  }
+  .commission-text { font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .commission-text strong { color: var(--green); }
+
+  /* Market status bar */
+  .market-bar {
+    background: var(--surface);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 11px;
+    animation: fadeUp 0.5s ease 0.2s both;
+  }
+  .market-status { display: flex; align-items: center; gap: 6px; }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; animation: blink 1.5s ease-in-out infinite; }
+  .market-pairs { display: flex; gap: 16px; }
+  .pair { font-family: 'Space Mono', monospace; font-size: 10px; }
+
+  /* Post schedule */
+  .schedule-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 0.5px solid var(--border);
+  }
+  .schedule-row:last-child { border-bottom: none; }
+  .sched-time {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--cyan);
+    font-weight: 700;
+    min-width: 56px;
+  }
+  .sched-text { font-size: 12px; color: var(--muted); }
+  .sched-text strong { color: var(--white); }
+
+  /* Disclaimer */
+  .disclaimer {
+    font-size: 10px;
+    color: var(--dim);
+    text-align: center;
+    line-height: 1.7;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 0.5px solid var(--border);
+  }
+
+  /* Stagger animations */
+  .link-btn:nth-child(1) { animation-delay: 0.05s; }
+  .link-btn:nth-child(2) { animation-delay: 0.10s; }
+  .link-btn:nth-child(3) { animation-delay: 0.15s; }
+  .link-btn:nth-child(4) { animation-delay: 0.20s; }
+  .link-btn:nth-child(5) { animation-delay: 0.25s; }
+  .link-btn:nth-child(6) { animation-delay: 0.30s; }
+
+  /* Glow accent on hover for primary CTA */
+  .link-btn.primary {
+    border-color: rgba(0,212,255,0.3);
+  }
+  .link-btn.primary:hover {
+    border-color: var(--cyan);
+    box-shadow: 0 0 20px rgba(0,212,255,0.08);
+  }
+
+  /* Responsive */
+  @media (max-width: 520px) {
+    .container { padding: 68px 16px 48px; }
+    .name { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Live ticker tape -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span class="sym">$NVDA</span> <span class="up">▲ 1.88% $225.70</span></span>
+    <span class="ticker-item"><span class="sym">$AAPL</span> <span class="up">▲ 1.83% $307.38</span></span>
+    <span class="ticker-item"><span class="sym">$AVGO</span> <span class="dn">▼ 14.2% $413.45</span></span>
+    <span class="ticker-item"><span class="sym">$MU</span> <span class="up">▲ 8.1% $857.20</span></span>
+    <span class="ticker-item"><span class="sym">$AMD</span> <span class="up">▲ 0.63% $521.54</span></span>
+    <span class="ticker-item"><span class="sym">$SNDK</span> <span class="dn">▼ 12.0% $1,529</span></span>
+    <span class="ticker-item"><span class="sym">$ORCL</span> <span class="up">▲ 9.43% $247.06</span></span>
+    <span class="ticker-item"><span class="sym">$MSFT</span> <span class="dn">▼ 1.00% $438.42</span></span>
+    <span class="ticker-item"><span class="sym">S&amp;P500</span> <span class="up">▲ 0.80% 7,612</span></span>
+    <span class="ticker-item"><span class="sym">NASDAQ</span> <span class="up">▲ 1.50% 27,166</span></span>
+    <span class="ticker-item"><span class="sym">10Y</span> <span class="dn">4.54% ↑</span></span>
+    <span class="ticker-item"><span class="sym">VIX</span> <span class="neu">15.81</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="sym">$NVDA</span> <span class="up">▲ 1.88% $225.70</span></span>
+    <span class="ticker-item"><span class="sym">$AAPL</span> <span class="up">▲ 1.83% $307.38</span></span>
+    <span class="ticker-item"><span class="sym">$AVGO</span> <span class="dn">▼ 14.2% $413.45</span></span>
+    <span class="ticker-item"><span class="sym">$MU</span> <span class="up">▲ 8.1% $857.20</span></span>
+    <span class="ticker-item"><span class="sym">$AMD</span> <span class="up">▲ 0.63% $521.54</span></span>
+    <span class="ticker-item"><span class="sym">$SNDK</span> <span class="dn">▼ 12.0% $1,529</span></span>
+    <span class="ticker-item"><span class="sym">$ORCL</span> <span class="up">▲ 9.43% $247.06</span></span>
+    <span class="ticker-item"><span class="sym">$MSFT</span> <span class="dn">▼ 1.00% $438.42</span></span>
+    <span class="ticker-item"><span class="sym">S&amp;P500</span> <span class="up">▲ 0.80% 7,612</span></span>
+    <span class="ticker-item"><span class="sym">NASDAQ</span> <span class="up">▲ 1.50% 27,166</span></span>
+    <span class="ticker-item"><span class="sym">10Y</span> <span class="dn">4.54% ↑</span></span>
+    <span class="ticker-item"><span class="sym">VIX</span> <span class="neu">15.81</span></span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Profile -->
+  <div class="profile">
+    <div class="avatar">
+      IU
+      <div class="live-dot"></div>
+    </div>
+    <div class="handle">@investorupdate.ai</div>
+    <div class="name">Investor Update 📊</div>
+    <div class="bio">
+      <strong>AI-powered US stock market analysis.</strong><br>
+      ⚡ Bull flags · Options flow · Earnings breakdowns<br>
+      🔴 <strong>BULL or BEAR?</strong> Drop your call in the comments<br>
+      🕗 2 posts daily · <span class="highlight">8AM &amp; 8PM MYT</span><br>
+      <span style="color: var(--dim); font-size: 11px;">⚠️ Not financial advice · DYOR always</span>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-val" style="color: var(--cyan);">2×</div>
+        <div class="stat-label">Daily posts</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" style="color: var(--green);">$0</div>
+        <div class="stat-label">To sign up</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val" style="color: var(--amber);">5K</div>
+        <div class="stat-label">Goal followers</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Market status -->
+  <div class="market-bar">
+    <div class="market-status">
+      <div class="status-dot" style="background: var(--green);"></div>
+      <span style="font-size: 11px; font-weight: 700; color: var(--green);">US MARKET OPEN</span>
+      <span style="font-size: 10px; color: var(--dim);">NYSE · NASDAQ</span>
+    </div>
+    <div class="market-pairs">
+      <span class="pair" style="color: var(--green);">S&P ▲ 0.80%</span>
+      <span class="pair" style="color: var(--green);">NDX ▲ 1.50%</span>
+    </div>
+  </div>
+
+  <!-- Instagram CTA -->
+  <div class="section-label">Follow us</div>
+
+  <a class="link-btn primary" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon ig-icon">📸</div>
+    <div class="btn-content">
+      <div class="btn-title">Follow @investorupdate.ai</div>
+      <div class="btn-sub">Daily bull flag breakdowns · options flow · debate posts</div>
+    </div>
+    <span class="btn-badge badge-cyan">Instagram</span>
+  </a>
+
+  <!-- Broker affiliate links -->
+  <div class="section-label">Start trading — our trusted brokers</div>
+
+  <div class="commission-strip">
+    <span style="font-size: 18px;">💰</span>
+    <div class="commission-text">
+      <strong>Sign up via our links and earn free stocks &amp; bonuses.</strong> We may earn a commission at no cost to you — it helps keep this account free.
+    </div>
+  </div>
+
+  <a class="link-btn" href="https://www.interactivebrokers.com/referral" target="_blank">
+    <div class="btn-icon ibkr-icon">🏦</div>
+    <div class="btn-content">
+      <div class="btn-title">Interactive Brokers (IBKR)</div>
+      <div class="btn-sub">Global markets · 160+ exchanges · Low commissions · US &amp; MY</div>
+    </div>
+    <span class="btn-badge badge-cyan">$200 / referral</span>
+  </a>
+
+  <a class="link-btn" href="https://act.webullapp.com/mktb/partners/individual" target="_blank">
+    <div class="btn-icon webull-icon">📱</div>
+    <div class="btn-content">
+      <div class="btn-title">Webull</div>
+      <div class="btn-sub">Commission-free · Advanced charts · Free stocks for new users</div>
+    </div>
+    <span class="btn-badge badge-green">Up to $1,400 bonus</span>
+  </a>
+
+  <a class="link-btn" href="https://www.moomoo.com/my" target="_blank">
+    <div class="btn-icon moomoo-icon">🔴</div>
+    <div class="btn-content">
+      <div class="btn-title">moomoo Malaysia</div>
+      <div class="btn-sub">SC-licensed · Free Apple share for new users · RM1,800+ welcome pack</div>
+    </div>
+    <span class="btn-badge badge-red">RM1,800+ bonus</span>
+  </a>
+
+  <!-- Content / analysis -->
+  <div class="section-label">Our analysis</div>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(0,212,160,0.1);">📈</div>
+    <div class="btn-content">
+      <div class="btn-title">Latest: $AAPL WWDC 2026</div>
+      <div class="btn-sub">"Siri just died. Google is now inside your iPhone." — Full breakdown</div>
+    </div>
+    <span class="btn-badge badge-green">Live now</span>
+  </a>
+
+  <a class="link-btn" href="https://www.instagram.com/investorupdate.ai" target="_blank">
+    <div class="btn-icon" style="background: rgba(245,166,35,0.1);">🚩</div>
+    <div class="btn-content">
+      <div class="btn-title">10 Bull Flag Stocks — Full Report</div>
+      <div class="btn-sub">NVDA · AVGO · AMD · LRCX · ARM · DELL · ORCL · MSFT · CIEN · DDOG</div>
+    </div>
+    <span class="btn-badge badge-amber">Free report</span>
+  </a>
+
+  <!-- Schedule preview -->
+  <div class="section-label">Content schedule</div>
+  <div style="background: var(--surface); border: 0.5px solid var(--border); border-radius: 8px; padding: 12px 16px; animation: fadeUp 0.5s ease 0.4s both;">
+    <div class="schedule-row">
+      <span class="sched-time">8:00 AM</span>
+      <span class="sched-text"><strong>Pre-market analysis</strong> · US open prep</span>
+    </div>
+    <div class="schedule-row">
+      <span class="sched-time">12:00 PM</span>
+      <span class="sched-text"><strong>Debate of the Day</strong> · Bull vs Bear Story</span>
+    </div>
+    <div class="schedule-row">
+      <span class="sched-time">8:00 PM</span>
+      <span class="sched-text"><strong>Market close recap</strong> · Options flow</span>
+    </div>
+    <div class="schedule-row">
+      <span class="sched-time">9:30 PM</span>
+      <span class="sched-text"><strong>Market Open Alert</strong> · US session live</span>
+    </div>
+    <div class="schedule-row">
+      <span class="sched-time">Fri 8PM</span>
+      <span class="sched-text"><strong>Instagram Live</strong> · Weekly market recap</span>
+    </div>
+  </div>
+
+  <!-- Community -->
+  <div class="section-label">Community</div>
+
+  <a class="link-btn" href="https://discord.gg/investorupdate" target="_blank">
+    <div class="btn-icon discord-icon">💬</div>
+    <div class="btn-content">
+      <div class="btn-title">Join our Discord</div>
+      <div class="btn-sub">Real-time alerts · chart setups · community watchlist</div>
+    </div>
+    <span class="btn-badge badge-purple">Free to join</span>
+  </a>
+
+  <!-- Disclaimer -->
+  <div class="disclaimer">
+    <strong style="color: var(--amber);">⚠️ IMPORTANT DISCLAIMER</strong><br>
+    All content on @investorupdate.ai is for <strong>educational and informational purposes only</strong>. Nothing here constitutes financial advice, investment advice, or a recommendation to buy or sell any security. Always conduct your own due diligence (DYOR) before making any investment decision. Past analysis does not guarantee future results. Affiliate links above may earn us a commission at no additional cost to you.<br><br>
+    <span style="color: var(--dim);">© 2026 Investor Update AI · investorupdate.ai@gmail.com · Malaysia</span>
+  </div>
+
+</div>
+
+<script>
+  // Dynamic market status
+  const now = new Date();
+  const utcHour = now.getUTCHours();
+  const utcMin = now.getUTCMinutes();
+  const utcTotal = utcHour * 60 + utcMin;
+  const isWeekday = now.getUTCDay() >= 1 && now.getUTCDay() <= 5;
+  const marketOpen = 13 * 60 + 30; // 9:30 AM ET = 13:30 UTC
+  const marketClose = 20 * 60;     // 4:00 PM ET = 20:00 UTC
+  const isMarketOpen = isWeekday && utcTotal >= marketOpen && utcTotal < marketClose;
+
+  const statusEl = document.querySelector('.market-status');
+  const dotEl = document.querySelector('.status-dot');
+  if (!isMarketOpen) {
+    dotEl.style.background = 'var(--amber)';
+    statusEl.querySelector('span').style.color = 'var(--amber)';
+    statusEl.querySelector('span').textContent = 'US MARKET CLOSED';
+  }
+</script>
+</body>
+</html>
